@@ -14,3 +14,8 @@ Para activar Garet, añade tus archivos Garet-Book.otf y Garet-Heavy.otf a asset
 ## Importante
 La detección es orientativa, no de estudio: puede confundir tempo simple/doble y tonalidades relativas, modulaciones o temas sin centro tonal definido. La precisión depende del arreglo y la mezcla. Los audios se procesan localmente, sin servidores. La decodificación necesita un navegador moderno y memoria suficiente; los archivos superiores a 110 MB requieren entrada manual.
 El almacenamiento de audio continúa siendo solo local.
+
+
+## V0.5
+- Reproductor rediseñado como un dock compacto con controles encapsulados y barra de progreso fina.
+- Acciones de canción rediseñadas con botones tipo chip más elegantes.
