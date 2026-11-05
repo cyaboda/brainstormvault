@@ -1,17 +1,16 @@
-# BRAINSTORM VAULT V0.3
+# BRAINSTORM VAULT V0.4
 
-Diseño blanco de referencia. Página de inicio con banner y **Mi música**, sin la sección Proyectos. La biblioteca empieza vacía y los proyectos también.
+## Actualizaciones
+- Controles de reproducción SVG refinados, accesibles y sin caracteres tipográficos incorrectos.
+- Estimación local automática de BPM y tonalidad al importar audio con Web Audio API.
+- Botón «Analizar audio» en el detalle de cada canción existente.
+- Los campos BPM y Tonalidad se pueden editar manualmente.
+- Mantiene el IndexedDB y localStorage de la V0.3. No borres datos del navegador.
 
-## Publicación en GitHub Pages
+## Publicar
+Sube index.html, manifest.webmanifest y assets a la raíz de GitHub Pages.
+Para activar Garet, añade tus archivos Garet-Book.otf y Garet-Heavy.otf a assets/fonts/ si la licencia permite alojarlos públicamente. No se incluyen las fuentes en este ZIP.
 
-1. Sube `index.html`, `manifest.webmanifest` y la carpeta `assets/`.
-2. En tu propio repositorio, crea la carpeta `assets/fonts/`.
-3. Sube allí tus archivos de fuente autorizados `Garet-Book.otf` y `Garet-Heavy.otf`. **Las fuentes no se incluyen en este ZIP.**
-4. Publica los cambios. Es posible que debas recargar con Ctrl+F5.
-
-## Datos locales
-
-Las canciones importadas se guardan en IndexedDB en este navegador y origen, no en GitHub.
-Esta versión usa almacenamiento `brainstorm-vault-v03` y `bv03-data` para iniciar con la biblioteca vacía; **no borra los datos previos de V0.2**. Los datos no se sincronizan entre navegadores ni dispositivos. No elimines los audios originales.
-
-Para agregar música, usa el botón + en la parte superior o «Añadir música» en la biblioteca vacía.
+## Importante
+La detección es orientativa, no de estudio: puede confundir tempo simple/doble y tonalidades relativas, modulaciones o temas sin centro tonal definido. La precisión depende del arreglo y la mezcla. Los audios se procesan localmente, sin servidores. La decodificación necesita un navegador moderno y memoria suficiente; los archivos superiores a 110 MB requieren entrada manual.
+El almacenamiento de audio continúa siendo solo local.
