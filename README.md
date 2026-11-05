@@ -13,3 +13,11 @@ Coloca Garet-Book.otf y Garet-Heavy.otf en assets/fonts/ si la licencia permite 
 
 ## Límites
 La forma de onda se calcula desde el archivo completo y usa memoria del navegador; archivos muy grandes o formatos no soportados pueden fallar. BPM y tonalidad siguen siendo estimaciones.
+
+
+## V0.7
+- Soluciona un conflicto de CSS que convertía el botón de Play/Pause de FLOW en un óvalo enorme.
+- Play/Pause circular de 42 px; botones de anterior/siguiente de 34 px.
+- FLOW más compacto: títulos livianos, portada de 102 px, waveform y A/B Studio refinados.
+- Se conservan IndexedDB, biblioteca, BPM, tonalidad y comparación A/B.
+- Conserva las fuentes Garet en `assets/fonts/`; por su licencia no se distribuyen dentro del ZIP.
