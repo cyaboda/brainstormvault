@@ -32,3 +32,9 @@ Importar audio, reproducir, editar, eliminar, marcar favoritos, filtrar, analiza
 - Sidebar de cristal de altura completa, con margen uniforme de 20 px arriba y abajo.
 - Almacenamiento fijado visualmente al pie del panel cuando hay espacio.
 - Conserva la biblioteca, mini ondas y el almacenamiento local de las versiones anteriores.
+
+
+## V0.9.3
+- Waveforms centradas horizontalmente entre la información de la canción y el BPM.
+- Barras más delgadas, suaves y equilibradas, con alto de 24 px.
+- Escalado de canvas según el tamaño real mostrado y densidad de pantalla.
