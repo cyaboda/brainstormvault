@@ -50,3 +50,9 @@ Importar audio, reproducir, editar, eliminar, marcar favoritos, filtrar, analiza
 - Las mini ondas por pista ahora se actualizan en tiempo real mientras el audio avanza.
 - Se sincronizan también al pausar, reproducir, cargar metadata y hacer seek.
 - Corregido un bug de JavaScript donde el evento seguía apuntando a una referencia antigua de `updatePlayer`.
+
+
+## V0.9.6
+- Elimina el scroll vertical externo innecesario en escritorio.
+- Mantiene desplazamiento interno para bibliotecas extensas.
+- En móvil se conserva el desplazamiento normal.

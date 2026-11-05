@@ -144,6 +144,20 @@ body::before{content:"";position:fixed;inset:auto -7% -12% -8%;height:31vh;backg
 }
 .track-wave{height:34px!important}
 @media(max-width:600px){.track-wave-seek{height:34px}.track-wave{height:26px!important}}
+
+/* V0.9.6: evita desplazamiento exterior accidental en escritorio.
+   El contenido largo se desplaza dentro de la zona de biblioteca. */
+@media (min-width: 601px) {
+  html, body { height: 100%; overflow: hidden; }
+  .app { height: 100vh; height: 100dvh; min-height: 0; overflow: hidden; }
+  .main { height: 100%; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; }
+  .sidebar { flex-shrink: 0; }
+}
+@media (max-width: 600px) {
+  html, body { height: auto; overflow-x: hidden; overflow-y: auto; }
+  .app { height: auto; min-height: 100dvh; overflow: visible; }
+  .main { overflow: visible; height: auto; }
+}
 </style></head><body><div id="app" class="app"></div><div id="modalroot"></div><div id="flowroot"></div><div id="toastroot"></div><script>
 const S={view:'Inicio',filter:'Todo',q:'',tracks:[],projects:[],current:null,playing:false,shuffle:false,repeat:false,volume:80,objecturl:null,modal:null};
 const examples=[];
