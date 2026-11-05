@@ -20,3 +20,15 @@ Importar audio, reproducir, editar, eliminar, marcar favoritos, filtrar, analiza
 - Añadidas ondas reales y navegables dentro de cada fila de música.
 - Para ver la onda se analiza localmente el audio ya importado.
 - Se conservan base IndexedDB, controles y datos.
+
+
+## V0.9.1
+- La columna del título tiene ancho controlado para que la forma de onda empiece junto al nombre de la pista.
+- La forma de onda utiliza todo el espacio flexible restante.
+- Ajustes responsive sin modificar la biblioteca guardada.
+
+
+## V0.9.2
+- Sidebar de cristal de altura completa, con margen uniforme de 20 px arriba y abajo.
+- Almacenamiento fijado visualmente al pie del panel cuando hay espacio.
+- Conserva la biblioteca, mini ondas y el almacenamiento local de las versiones anteriores.
