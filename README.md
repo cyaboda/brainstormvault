@@ -1,23 +1,15 @@
-# Brainstorm Vault 0.6 – FLOW
+# BRAINSTORM VAULT V0.8 · Liquid Glass
 
-V0.6 incorpora un reproductor expandido FLOW con forma de onda calculada localmente y navegación mediante clic o flechas.
+Rediseño integral inspirado en la maqueta aprobada: fondo atmosférico, paneles translúcidos, sidebar y reproductor estilo macOS, biblioteca central y tarjeta de FLOW a la derecha. FLOW completo sigue disponible haciendo clic en su tarjeta o en el botón del reproductor.
 
-## A/B Studio
-Selecciona dos archivos importados y usa A/B. La aplicación cambia de archivo conservando el segundo de reproducción. Si las versiones no están alineadas en tiempo, la comparación no quedará sincronizada musicalmente. No se realiza igualación de volumen ni mezcla simultánea.
+## Instalación en GitHub Pages
 
-## Publicación
-Sube `index.html`, `manifest.webmanifest` y `assets/` a GitHub Pages. Se mantiene la misma base IndexedDB/localStorage de V0.3-V0.5. No se eliminan datos anteriores. Tus canciones siguen guardadas solo en el navegador.
+1. Sube `index.html`, `manifest.webmanifest` y el directorio `assets` a la raíz del repositorio (reemplaza los anteriores).
+2. Mantén los archivos `Garet-Book.otf` y `Garet-Heavy.otf` **solo si su licencia permite la publicación**, en `assets/fonts/`. Las fuentes no se distribuyen en el ZIP.
+3. Comprueba el resultado con Ctrl+F5.
 
-## Fuentes
-Coloca Garet-Book.otf y Garet-Heavy.otf en assets/fonts/ si la licencia permite publicarlas. Las fuentes no se incluyen en este paquete.
+La música y los metadatos se mantienen en el almacenamiento local IndexedDB y localStorage del mismo origen web. No borres los datos del sitio ni cambies el dominio si quieres conservarlos. Haz una copia de los originales de tus canciones.
 
-## Límites
-La forma de onda se calcula desde el archivo completo y usa memoria del navegador; archivos muy grandes o formatos no soportados pueden fallar. BPM y tonalidad siguen siendo estimaciones.
+## Funciones
 
-
-## V0.7
-- Soluciona un conflicto de CSS que convertía el botón de Play/Pause de FLOW en un óvalo enorme.
-- Play/Pause circular de 42 px; botones de anterior/siguiente de 34 px.
-- FLOW más compacto: títulos livianos, portada de 102 px, waveform y A/B Studio refinados.
-- Se conservan IndexedDB, biblioteca, BPM, tonalidad y comparación A/B.
-- Conserva las fuentes Garet en `assets/fonts/`; por su licencia no se distribuyen dentro del ZIP.
+Importar audio, reproducir, editar, eliminar, marcar favoritos, filtrar, analizar aproximadamente BPM y tonalidad, visualizar la onda real en FLOW y comparar dos archivos A/B desde un punto de reproducción equivalente. El panel lateral es un acceso previo decorativo; la onda real y los selectores A/B funcionales están en FLOW Studio. No hay sincronización en nube.
