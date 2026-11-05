@@ -13,3 +13,10 @@ La música y los metadatos se mantienen en el almacenamiento local IndexedDB y l
 ## Funciones
 
 Importar audio, reproducir, editar, eliminar, marcar favoritos, filtrar, analizar aproximadamente BPM y tonalidad, visualizar la onda real en FLOW y comparar dos archivos A/B desde un punto de reproducción equivalente. El panel lateral es un acceso previo decorativo; la onda real y los selectores A/B funcionales están en FLOW Studio. No hay sincronización en nube.
+
+
+## V0.9
+- Retirado el panel FLOW lateral de Inicio.
+- Añadidas ondas reales y navegables dentro de cada fila de música.
+- Para ver la onda se analiza localmente el audio ya importado.
+- Se conservan base IndexedDB, controles y datos.
