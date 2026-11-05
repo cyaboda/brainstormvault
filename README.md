@@ -1,21 +1,15 @@
-# BRAINSTORM VAULT V0.4
+# Brainstorm Vault 0.6 – FLOW
 
-## Actualizaciones
-- Controles de reproducción SVG refinados, accesibles y sin caracteres tipográficos incorrectos.
-- Estimación local automática de BPM y tonalidad al importar audio con Web Audio API.
-- Botón «Analizar audio» en el detalle de cada canción existente.
-- Los campos BPM y Tonalidad se pueden editar manualmente.
-- Mantiene el IndexedDB y localStorage de la V0.3. No borres datos del navegador.
+V0.6 incorpora un reproductor expandido FLOW con forma de onda calculada localmente y navegación mediante clic o flechas.
 
-## Publicar
-Sube index.html, manifest.webmanifest y assets a la raíz de GitHub Pages.
-Para activar Garet, añade tus archivos Garet-Book.otf y Garet-Heavy.otf a assets/fonts/ si la licencia permite alojarlos públicamente. No se incluyen las fuentes en este ZIP.
+## A/B Studio
+Selecciona dos archivos importados y usa A/B. La aplicación cambia de archivo conservando el segundo de reproducción. Si las versiones no están alineadas en tiempo, la comparación no quedará sincronizada musicalmente. No se realiza igualación de volumen ni mezcla simultánea.
 
-## Importante
-La detección es orientativa, no de estudio: puede confundir tempo simple/doble y tonalidades relativas, modulaciones o temas sin centro tonal definido. La precisión depende del arreglo y la mezcla. Los audios se procesan localmente, sin servidores. La decodificación necesita un navegador moderno y memoria suficiente; los archivos superiores a 110 MB requieren entrada manual.
-El almacenamiento de audio continúa siendo solo local.
+## Publicación
+Sube `index.html`, `manifest.webmanifest` y `assets/` a GitHub Pages. Se mantiene la misma base IndexedDB/localStorage de V0.3-V0.5. No se eliminan datos anteriores. Tus canciones siguen guardadas solo en el navegador.
 
+## Fuentes
+Coloca Garet-Book.otf y Garet-Heavy.otf en assets/fonts/ si la licencia permite publicarlas. Las fuentes no se incluyen en este paquete.
 
-## V0.5
-- Reproductor rediseñado como un dock compacto con controles encapsulados y barra de progreso fina.
-- Acciones de canción rediseñadas con botones tipo chip más elegantes.
+## Límites
+La forma de onda se calcula desde el archivo completo y usa memoria del navegador; archivos muy grandes o formatos no soportados pueden fallar. BPM y tonalidad siguen siendo estimaciones.
