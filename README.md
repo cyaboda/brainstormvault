@@ -38,3 +38,15 @@ Importar audio, reproducir, editar, eliminar, marcar favoritos, filtrar, analiza
 - Waveforms centradas horizontalmente entre la información de la canción y el BPM.
 - Barras más delgadas, suaves y equilibradas, con alto de 24 px.
 - Escalado de canvas según el tamaño real mostrado y densidad de pantalla.
+
+
+## V0.9.4
+- Las ondas ahora usan energía RMS por tramo y normalización robusta, evitando barras casi idénticas.
+- Amplitud visual mayor y ondas centradas sin invadir los metadatos.
+- No cambia los audios locales ni BPM/tonalidad.
+
+
+## V0.9.5
+- Las mini ondas por pista ahora se actualizan en tiempo real mientras el audio avanza.
+- Se sincronizan también al pausar, reproducir, cargar metadata y hacer seek.
+- Corregido un bug de JavaScript donde el evento seguía apuntando a una referencia antigua de `updatePlayer`.

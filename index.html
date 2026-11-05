@@ -133,6 +133,17 @@ body::before{content:"";position:fixed;inset:auto -7% -12% -8%;height:31vh;backg
 @media(max-width:1100px){
   .track-wave-seek{width:100%!important;padding-inline:3px}
 }
+
+/* V0.9.4: forma de onda con amplitud real, contraste y aire */
+.track-wave-seek{
+ width:min(100%,510px)!important;
+ justify-self:center;
+ height:42px;
+ padding:4px 8px;
+ border-radius:12px;
+}
+.track-wave{height:34px!important}
+@media(max-width:600px){.track-wave-seek{height:34px}.track-wave{height:26px!important}}
 </style></head><body><div id="app" class="app"></div><div id="modalroot"></div><div id="flowroot"></div><div id="toastroot"></div><script>
 const S={view:'Inicio',filter:'Todo',q:'',tracks:[],projects:[],current:null,playing:false,shuffle:false,repeat:false,volume:80,objecturl:null,modal:null};
 const examples=[];
@@ -329,17 +340,29 @@ async function getRowWave(id){
  if(!db)return null;
  const record=await dbGet(id);
  if(!record?.file)return null;
- // El navegador decodifica sólo cuando la biblioteca solicita la onda.
  const context=new (window.AudioContext||window.webkitAudioContext)();
  try{
   const data=await context.decodeAudioData(await record.file.arrayBuffer());
-  const ch=data.getChannelData(0),N=112,arr=new Float32Array(N),stride=Math.max(1,Math.floor(ch.length/N));let top=0;
+  const ch=data.getChannelData(0), N=96, arr=new Float32Array(N);
+  const step=ch.length/N;
   for(let i=0;i<N;i++){
-   const a=i*stride,b=Math.min(ch.length,a+stride),hop=Math.max(1,Math.floor((b-a)/350));
-   let peak=0;for(let j=a;j<b;j+=hop)peak=Math.max(peak,Math.abs(ch[j]));
-   arr[i]=peak;top=Math.max(top,peak);
+   const a=Math.floor(i*step),b=Math.min(ch.length,Math.floor((i+1)*step));
+   const hop=Math.max(1,Math.floor((b-a)/700));
+   let sum=0, peak=0, count=0;
+   for(let j=a;j<b;j+=hop){
+    const v=Math.abs(ch[j]);sum+=v*v;peak=Math.max(peak,v);count++;
+   }
+   // La energía RMS refleja la dinámica, sin aplanarla como hacía el pico normalizado.
+   arr[i]=.80*Math.sqrt(sum/Math.max(count,1))+.20*peak;
   }
-  const output=Array.from(arr,v=>Math.max(.055,Math.sqrt(v/(top||1))));
+  const sorted=Array.from(arr).sort((a,b)=>a-b);
+  const low=sorted[Math.floor(sorted.length*.08)]||0;
+  const high=sorted[Math.floor(sorted.length*.94)]||1;
+  const span=Math.max(.0001,high-low);
+  const output=Array.from(arr,v=>{
+   const normalized=Math.max(0,Math.min(1,(v-low)/span));
+   return .16+.84*Math.pow(normalized,.72);
+  });
   rowWaveCache.set(id,output);return output;
  }finally{await context.close().catch(()=>{})}
 }
@@ -353,17 +376,17 @@ function drawRowWave(canvas){
  ctx.clearRect(0,0,W,H);
  const points=rowWaveCache.get(id);
  const fraction=(S.current===id&&audio.duration)?Math.max(0,Math.min(1,audio.currentTime/audio.duration)):0;
- const count=points?points.length:64;
+ const count=points?points.length:72;
  const step=W/count;
- const width=Math.max(1.2*ratio,Math.min(3.1*ratio,step*.52));
+ const barWidth=Math.max(1.5*ratio,Math.min(3.5*ratio,step*.52));
  for(let i=0;i<count;i++){
-  const level=points?points[i]:.08;
-  const h=Math.max(2.2*ratio,Math.min(H-3*ratio,level*(H-7*ratio)*.75));
-  const x=i*step+(step-width)/2,y=(H-h)/2,r=Math.min(width/2,2*ratio);
-  ctx.fillStyle=i/count<=fraction&&points?'#47505a':'#bfc7d0';
+  const level=points?points[i]:.12;
+  const h=Math.max(3*ratio,Math.min(H-3*ratio,level*(H-5*ratio)));
+  const x=i*step+(step-barWidth)/2,y=(H-h)/2,r=barWidth/2;
+  ctx.fillStyle=(i/count<=fraction&&points)?'#45505e':'#aeb9c6';
   ctx.beginPath();
-  if(typeof ctx.roundRect==='function')ctx.roundRect(x,y,width,h,r);
-  else ctx.rect(x,y,width,h);
+  if(typeof ctx.roundRect==='function')ctx.roundRect(x,y,barWidth,h,r);
+  else ctx.rect(x,y,barWidth,h);
   ctx.fill();
  }
 }
@@ -389,7 +412,13 @@ render=function(){_originalRender();hydrateRowWaves()};
 const _originalRefresh=refreshContent;
 refreshContent=function(){_originalRefresh();hydrateRowWaves()};
 const _originalUpdate=updatePlayer;
-updatePlayer=function(){_originalUpdate();document.querySelectorAll('canvas.track-wave').forEach(drawRowWave)};
+function syncRowWaveProgress(){document.querySelectorAll('canvas.track-wave').forEach(drawRowWave)}
+updatePlayer=function(){_originalUpdate();syncRowWaveProgress()};
+audio.addEventListener('timeupdate',syncRowWaveProgress);
+audio.addEventListener('loadedmetadata',syncRowWaveProgress);
+audio.addEventListener('seeked',syncRowWaveProgress);
+audio.addEventListener('play',syncRowWaveProgress);
+audio.addEventListener('pause',syncRowWaveProgress);
 
 init();
 </script></body></html>
