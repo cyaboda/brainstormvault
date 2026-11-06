@@ -158,7 +158,17 @@ body::before{content:"";position:fixed;inset:auto -7% -12% -8%;height:31vh;backg
   .app { height: auto; min-height: 100dvh; overflow: visible; }
   .main { overflow: visible; height: auto; }
 }
-</style></head><body><div id="app" class="app"></div><div id="modalroot"></div><div id="flowroot"></div><div id="toastroot"></div><script>
+
+/* Sincronización V1.0: acceso, estado en nube y migración */
+.cloud-auth-backdrop{position:fixed;inset:0;z-index:100;background:linear-gradient(120deg,#f6f7faed,#dfe9f3f2);backdrop-filter:blur(22px);display:grid;place-items:center;padding:18px}
+.cloud-login{background:#ffffffcc;border:1px solid #fff;box-shadow:0 25px 95px #252a321c;border-radius:28px;padding:32px;width:min(410px,100%)}
+.cloud-login h1{font-size:30px;font-weight:800;margin:5px 0 6px}.cloud-login p{color:#747985;font-size:13px;line-height:1.5}
+.cloud-login .field{font-size:12px}.cloud-login .action{width:100%;margin-top:12px;min-height:43px}
+.cloud-status{font-size:12px;color:#656b74;min-height:18px;margin-top:12px;line-height:1.5}
+.cloud-chip{background:#e7efe9;border:1px solid #d8e9dc;color:#335b43;border-radius:20px;padding:7px 10px;font-size:11px}
+.cloud-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.cloud-actions .action{font-size:12px}
+.cloud-meter{font-size:12px;color:#636a75;margin-top:7px}
+</style></head><body><div id="app" class="app"></div><div id="modalroot"></div><div id="flowroot"></div><div id="toastroot"></div><div id="cloudauthroot"></div><script>
 const S={view:'Inicio',filter:'Todo',q:'',tracks:[],projects:[],current:null,playing:false,shuffle:false,repeat:false,volume:80,objecturl:null,modal:null};
 const examples=[];
 const icons={home:'<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/>',music:'<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',layers:'<path d="m12 3 9 5-9 5-9-5 9-5zm-9 9 9 5 9-5M3 16l9 5 9-5"/>',heart:'<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8z"/>',clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l4 2"/>',settings:'<circle cx="12" cy="12" r="3"/><path d="M9 2h6l.6 2.4 2.1 1.2L20 4l3 5-1.9 1.7v2.6L23 15l-3 5-2.3-1.6-2.1 1.2L15 22H9l-.6-2.4-2.1-1.2L4 20l-3-5 1.9-1.7v-2.6L1 9l3-5 2.3 1.6 2.1-1.2z"/>',folder:'<path d="M3 6h7l2 2h9v11H3z"/>',search:'<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/>',back:'<path d="m15 5-7 7 7 7"/>',forward:'<path d="m9 5 7 7-7 7"/>',cloud:'<path d="M6 18a4 4 0 0 1-.3-8A7 7 0 0 1 19 9a4.5 4.5 0 0 1 0 9z"/>',volume:'<path d="M4 9h4l5-4v14l-5-4H4zM17 9a5 5 0 0 1 0 6"/>',upload:'<path d="M12 16V3m-5 5 5-5 5 5M4 17v4h16v-4"/>'};
@@ -169,7 +179,7 @@ let db;const openDb=()=>new Promise((resolve,reject)=>{const r=indexedDB.open('b
 const dbPut=o=>new Promise((resolve,reject)=>{const t=db.transaction('audio','readwrite'),r=t.objectStore('audio').put(o);r.onsuccess=()=>resolve();r.onerror=()=>reject(r.error)});
 const dbGet=id=>new Promise((resolve,reject)=>{const t=db.transaction('audio','readonly'),r=t.objectStore('audio').get(id);r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)});
 const dbDel=id=>new Promise((resolve,reject)=>{const t=db.transaction('audio','readwrite'),r=t.objectStore('audio').delete(id);r.onsuccess=()=>resolve();r.onerror=()=>reject(r.error)});
-const persist=()=>localStorage.setItem('bv03-data',JSON.stringify({tracks:S.tracks.filter(t=>!t.demo),projects:S.projects,volume:S.volume}));
+const persist=()=>localStorage.setItem('bv03-data',JSON.stringify({tracks:S.tracks.filter(t=>!t.demo&&!t.cloud),projects:S.projects,volume:S.volume}));
 function init(){try{const data=JSON.parse(localStorage.getItem('bv03-data')||'{}');S.tracks=[...examples,...(data.tracks||[])];if(data.projects)S.projects=data.projects;S.volume=data.volume??80}catch{S.tracks=[...examples]}render();openDb().catch(()=>toast('Tu navegador no permite almacenamiento local.'));}
 const allTracks=()=>S.tracks;function setView(v){S.view=v;S.filter='Todo';S.q='';render();window.scrollTo(0,0)}
 function sidebar(){return `<aside class="sidebar"><div class="brand" onclick="setView('Inicio')"><div class="brandmark">B</div><div><strong>BRAINSTORM</strong><small>VAULT</small></div></div><nav class="nav">${[['Inicio','home'],['Biblioteca','music'],['Proyectos','layers'],['Favoritos','heart'],['Recientes','clock']].map(([label,i])=>`<button class="${S.view===label?'active':''}" onclick="setView('${label}')">${icon(i)}<span>${label}</span></button>`).join('')}</nav><div class="folder-head"><span>Colecciones</span><button title="Crear colección" onclick="openCollection()">+</button></div><div class="folders">${[['Demos & Ideas','Demo'],['Work in Progress','Idea'],['Masters Finales','Master'],['Lanzamientos','Lanzamiento']].map(([label,tag])=>`<button onclick="S.view='Biblioteca';S.filter='${tag}';render()">${icon('folder')}<span>${label}</span></button>`).join('')}</div><div class="storage"><div class="storage-head"><span class="cloud">${icon('cloud')}</span><div><strong>Almacenamiento</strong><small id="sizeLabel">Archivos locales del navegador</small></div></div><div class="progress-mini"><span id="usedbar"></span></div></div></aside>`}
@@ -435,4 +445,4 @@ audio.addEventListener('play',syncRowWaveProgress);
 audio.addEventListener('pause',syncRowWaveProgress);
 
 init();
-</script></body></html>
+</script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="cloud.js"></script></body></html>

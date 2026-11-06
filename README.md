@@ -1,58 +1,29 @@
-# BRAINSTORM VAULT V0.8 · Liquid Glass
+# BRAINSTORM VAULT V1.0 · Liquid Glass + Supabase
 
-Rediseño integral inspirado en la maqueta aprobada: fondo atmosférico, paneles translúcidos, sidebar y reproductor estilo macOS, biblioteca central y tarjeta de FLOW a la derecha. FLOW completo sigue disponible haciendo clic en su tarjeta o en el botón del reproductor.
+## Publicación
+1. En GitHub Pages, sube **index.html**, **cloud.js**, **manifest.webmanifest** y la carpeta **assets** (con su contenido). No borres datos del navegador ni el repositorio antes de verificar la migración.
+2. Conserva las fuentes locales del proyecto en `assets/fonts/Garet-Book.otf` y `Garet-Heavy.otf` **solo si su licencia autoriza publicarlas**. No se distribuyen aquí.
+3. Espera a que GitHub Pages actualice los archivos. Abre el sitio usando HTTPS y refresca con Ctrl+F5.
+4. Inicia sesión con el usuario creado manualmente en Supabase Authentication. No hay registro público de cuentas desde esta app.
+5. En el **mismo navegador de Windows donde importaste la música**, entra a **Ajustes → Sincronizar canciones locales**. Comprueba la biblioteca en el iPhone iniciando sesión con la misma cuenta.
 
-## Instalación en GitHub Pages
+## Conexión
+- Supabase URL: `https://rghfzazfgbbjamhnucin.supabase.co`
+- Se utiliza únicamente la **publishable key**, que se expone públicamente porque el repositorio es público. Las reglas RLS ya establecidas son imprescindibles.
+- Tabla: `public.tracks`, bucket: `music` **privado**. Rutas: `UID/audio/<uuid>.<ext>` y `UID/covers/<uuid>.<ext>`.
+- No incluyas secret keys, service_role ni contraseñas en el código o en GitHub.
+- En Supabase **Authentication → Settings**, desactiva el registro público si quieres solo usuarios creados por ti.
 
-1. Sube `index.html`, `manifest.webmanifest` y el directorio `assets` a la raíz del repositorio (reemplaza los anteriores).
-2. Mantén los archivos `Garet-Book.otf` y `Garet-Heavy.otf` **solo si su licencia permite la publicación**, en `assets/fonts/`. Las fuentes no se distribuyen en el ZIP.
-3. Comprueba el resultado con Ctrl+F5.
+## Límites y precauciones
+- El bucket gratuito mostrado por tu cuenta tiene un **límite de 50 MB por archivo**. MP3 suelen caber; algunos WAV/FLAC no. La app muestra error antes de subirlos.
+- Los archivos previamente importados se preservan en IndexedDB del mismo navegador/dominio. Durante la migración se copian a Supabase; no se eliminan localmente. Antes de empezar, haz copia de tus audios originales.
+- Una vez sincronizados, aparecen desde otros equipos al acceder con la misma cuenta. Las nuevas importaciones se suben directamente a la nube.
+- Los audios privados se reproducen mediante URLs firmadas de duración limitada, generadas bajo sesión autorizada. La reproducción en segundo plano y los formatos disponibles dependen de Safari/iOS.
+- La onda real en la nube se calcula descargando temporalmente el audio desde Storage cuando es necesario. Con bibliotecas grandes puede tardar y consumir datos móviles.
+- BPM y tonalidad siguen siendo **estimaciones**, corregibles desde la app.
+- La comparación A/B conserva el segundo de reproducción, pero no compensa automáticamente volumen ni alineación musical.
+- No constituye aún una app nativa de CarPlay.
 
-La música y los metadatos se mantienen en el almacenamiento local IndexedDB y localStorage del mismo origen web. No borres los datos del sitio ni cambies el dominio si quieres conservarlos. Haz una copia de los originales de tus canciones.
-
-## Funciones
-
-Importar audio, reproducir, editar, eliminar, marcar favoritos, filtrar, analizar aproximadamente BPM y tonalidad, visualizar la onda real en FLOW y comparar dos archivos A/B desde un punto de reproducción equivalente. El panel lateral es un acceso previo decorativo; la onda real y los selectores A/B funcionales están en FLOW Studio. No hay sincronización en nube.
-
-
-## V0.9
-- Retirado el panel FLOW lateral de Inicio.
-- Añadidas ondas reales y navegables dentro de cada fila de música.
-- Para ver la onda se analiza localmente el audio ya importado.
-- Se conservan base IndexedDB, controles y datos.
-
-
-## V0.9.1
-- La columna del título tiene ancho controlado para que la forma de onda empiece junto al nombre de la pista.
-- La forma de onda utiliza todo el espacio flexible restante.
-- Ajustes responsive sin modificar la biblioteca guardada.
-
-
-## V0.9.2
-- Sidebar de cristal de altura completa, con margen uniforme de 20 px arriba y abajo.
-- Almacenamiento fijado visualmente al pie del panel cuando hay espacio.
-- Conserva la biblioteca, mini ondas y el almacenamiento local de las versiones anteriores.
-
-
-## V0.9.3
-- Waveforms centradas horizontalmente entre la información de la canción y el BPM.
-- Barras más delgadas, suaves y equilibradas, con alto de 24 px.
-- Escalado de canvas según el tamaño real mostrado y densidad de pantalla.
-
-
-## V0.9.4
-- Las ondas ahora usan energía RMS por tramo y normalización robusta, evitando barras casi idénticas.
-- Amplitud visual mayor y ondas centradas sin invadir los metadatos.
-- No cambia los audios locales ni BPM/tonalidad.
-
-
-## V0.9.5
-- Las mini ondas por pista ahora se actualizan en tiempo real mientras el audio avanza.
-- Se sincronizan también al pausar, reproducir, cargar metadata y hacer seek.
-- Corregido un bug de JavaScript donde el evento seguía apuntando a una referencia antigua de `updatePlayer`.
-
-
-## V0.9.6
-- Elimina el scroll vertical externo innecesario en escritorio.
-- Mantiene desplazamiento interno para bibliotecas extensas.
-- En móvil se conserva el desplazamiento normal.
+## Verificación
+- JavaScript `index.html` y `cloud.js` comprobado con `node --check`.
+- No se han podido ejecutar pruebas de inicio de sesión ni de subida contra la cuenta real; deben verificarse con usuario autenticado.
